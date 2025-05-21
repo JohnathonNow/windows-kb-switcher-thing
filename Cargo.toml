@@ -1,0 +1,9 @@
+[package]
+name = "kbswitcherthing"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+multiinput = "0.1.0"
+tray-icon = "0.20.1"
+winit = "0.30.10"
