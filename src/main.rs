@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 use multiinput::*;
 use std::process::Command;
 use std::thread;
