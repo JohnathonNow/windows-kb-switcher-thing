@@ -9,9 +9,8 @@ pub(super) fn listen(commands: Vec<super::config::Command>) {
 
     for command in commands.iter() {
         for j in 0..devices.keyboards.len() {
-            if devices.keyboards[j].name.contains(&command.keyboard) {
+            if devices.keyboards[j].name.contains(&command.keyboard) && command_map[j].is_none() {
                 command_map[j] = Some(command);
-                break;
             }
         }
     }

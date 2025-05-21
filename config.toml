@@ -4,6 +4,6 @@ cmd = "cmd.exe"
 args = [ "/c", "resources\\tv.bat" ]
 
 [[commands]]
-keyboard = "VID_CB10&PID_6456"
+keyboard = ""
 cmd = "cmd.exe"
 args = [ "/c", "resources\\normal.bat" ]
