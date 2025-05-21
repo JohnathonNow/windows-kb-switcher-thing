@@ -1,38 +1,41 @@
 use multiinput::*;
 use std::process::Command;
-use std::thread;
 
-pub(super) fn listen() {
-    let _handler = thread::spawn(move || {
-        let mut manager = RawInputManager::new().unwrap();
-        manager.register_devices(DeviceType::Keyboards);
-        let devices = manager.get_device_list();
-        let mut last_id = devices.keyboards.len();
-        loop {
-            if let Some(event) = manager.get_event() {
-                match event {
-                    RawEvent::KeyboardEvent(id, _, State::Pressed) => {
-                        if let Some(device) = devices.keyboards.get(id) {
-                            let _name = device.name.clone();
-                        }
-                        if id != last_id {
-                            last_id = id;
-                            if id == 0 {
-                                Command::new("cmd.exe")
-                                    .args(["/c", "normal.bat"])
-                                    .spawn()
-                                    .ok();
-                            } else {
-                                Command::new("cmd.exe")
-                                    .args(["/c", "tv.bat"])
-                                    .spawn()
-                                    .ok();
-                            }
-                        }
-                    }
-                    _ => (),
-                }
+pub(super) fn listen(commands: Vec<super::config::Command>) {
+    let mut manager = RawInputManager::new().unwrap();
+    manager.register_devices(DeviceType::Keyboards);
+    let devices = manager.get_device_list();
+    let mut command_map = vec![None; devices.keyboards.len()];
+
+    for command in commands.iter() {
+        for j in 0..devices.keyboards.len() {
+            if devices.keyboards[j].name.contains(&command.keyboard) {
+                command_map[j] = Some(command);
+                break;
             }
         }
-    });
+    }
+    let mut last_id = 0;
+    loop {
+        if let Some(event) = manager.get_event() {
+            match event {
+                RawEvent::KeyboardEvent(id, _, State::Pressed) => {
+                    if let Some(device) = devices.keyboards.get(id) {
+                        let _name = device.name.clone();
+                    }
+                    if id + 1 != last_id {
+                        last_id = id + 1;
+                        if let Some(command) = command_map[id] {
+                            println!("Running command: {:?} - {:?}", command.cmd, command.args);
+                            Command::new(&command.cmd)
+                                .args(&command.args)
+                                .spawn()
+                                .ok();
+                        }
+                    }
+                }
+                _ => (),
+            }
+        }
+    }
 }

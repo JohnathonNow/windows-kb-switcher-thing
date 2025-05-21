@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+figment = { version = "0.10", features = ["toml", "json", "yaml"] }
 multiinput = "0.1.0"
+serde = "1.0.219"
 tray-icon = "0.20.1"
 winit = "0.30.10"
