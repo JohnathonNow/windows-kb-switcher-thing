@@ -1,9 +1,9 @@
 [[commands]]
 keyboard = "VID_046D&PID_C52B"
-cmd = "cmd.exe"
-args = [ "/c", "resources\\tv.bat" ]
+cmd = "powershell.exe"
+args = [ "-ExecutionPolicy", "Bypass", "-File", "resources\\tv.ps1" ]
 
 [[commands]]
 keyboard = ""
-cmd = "cmd.exe"
-args = [ "/c", "resources\\normal.bat" ]
+cmd = "powershell.exe"
+args = [ "-ExecutionPolicy", "Bypass", "-File", "Resources\\normal.ps1" ]
