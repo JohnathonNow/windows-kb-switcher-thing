@@ -19,9 +19,6 @@ pub(super) fn listen(commands: Vec<super::config::Command>) {
         if let Some(event) = manager.get_event() {
             match event {
                 RawEvent::KeyboardEvent(id, _, State::Pressed) => {
-                    if let Some(device) = devices.keyboards.get(id) {
-                        let _name = device.name.clone();
-                    }
                     if id + 1 != last_id {
                         last_id = id + 1;
                         if let Some(command) = command_map[id] {
@@ -35,6 +32,8 @@ pub(super) fn listen(commands: Vec<super::config::Command>) {
                 }
                 _ => (),
             }
+        } else {
+            std::thread::sleep(std::time::Duration::from_millis(10));
         }
     }
 }
